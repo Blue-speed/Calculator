@@ -125,6 +125,9 @@ namespace Calculator
 	}
   }
 
+  /// <summary>
+  /// Stores either a value or operator in postfix notation.
+  /// </summary>
  class PostfixValue
   {
 	private double? _value;

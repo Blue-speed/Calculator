@@ -39,15 +39,15 @@ namespace Calculator_test
 	}
 
 	[TestMethod]
-	public void ComplexMultiply()
+	public void ComplexDivision()
 	{
 	  double value;
 	  double expected = 0;
 	  _calculator = new Calc();
 	  _calculator.Parse("0");
-	  for (double i = 1.5486154; i < 10; i++)
+	  for (double i = 1.5486154; i < 100; i++)
 	  {
-		_calculator.Parse("*");
+		_calculator.Parse("/");
 		expected = expected * i;
 		_calculator.Parse(i.ToString());
 	  }

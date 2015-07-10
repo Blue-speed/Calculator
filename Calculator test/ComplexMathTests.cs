@@ -41,15 +41,36 @@ namespace Calculator_test
 	  _calculator.ParseString("1+2*2");
 	  value = _calculator.Result();
 	  Assert.AreEqual(value, (double)5);
+	  _calculator.Clear();
+	  _calculator.ParseString("2*2+1");
+	  value = _calculator.Result();
+	  Assert.AreEqual(value, (double)5);
 	}
 	[TestMethod]
-	public void powerAndMultiply()
+	public void PowerAndMultiply()
 	{
 	  double value;
 	  _calculator = new Calc();
 	  _calculator.ParseString("2^3*2");
 	  value = _calculator.Result();
 	  Assert.AreEqual(value, (double)16);
+	  _calculator.Clear();
+	  _calculator.ParseString("2*2^3");
+	  value = _calculator.Result();
+	  Assert.AreEqual(value, (double)16);
+	}
+	[TestMethod]
+	public void AllOperators()
+	{
+	  double value;
+	  _calculator = new Calc();
+	  _calculator.ParseString("1+3*2/4-5^2");
+	  value = _calculator.Result();
+	  Assert.AreEqual(value, (double)-22.5);
+	  _calculator.Clear();
+	  _calculator.ParseString("8^2-4/2+3*4");
+	  value = _calculator.Result();
+	  Assert.AreEqual(value, (double)74);
 	}
 
   }
