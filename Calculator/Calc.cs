@@ -8,20 +8,20 @@ namespace Calculator
   /// <summary>
   /// Takes string input in infix or prefix notation 
   /// </summary>
-  public class Calc 
+  public class Calc
   {
 	private Queue<PostfixValue> _postfix;
 	private Stack<char> _operators;
 	/// <summary>
 	/// A list of all accepted operators and thier precidence.
 	/// </summary>
-	public Dictionary<char,int> Operators;
+	public Dictionary<char, int> Operators;
 
 	public Calc()
 	{
 	  _postfix = new Queue<PostfixValue>();
 	  _operators = new Stack<char>();
-	  Operators = new Dictionary<char,int>(){ { '-', 0}, { '+', 0 }, { '/', 1 }, { '*', 1 }, { '^', 2 } };
+	  Operators = new Dictionary<char, int>() { { '-', 0 }, { '+', 0 }, { '/', 1 }, { '*', 1 }, { '^', 2 }, { '(', -1 }, { ')', -1 } };
 	}
 	/// <summary>
 	/// Parses input string into values and operators to be evaluated
@@ -33,7 +33,7 @@ namespace Calculator
 	  string splitPatern = @"([\+\-\*\/\^])|(\w+)";
 	  values = new List<string>(Regex.Split(input, splitPatern));
 	  values.RemoveAll(str => String.IsNullOrWhiteSpace(str));
-	  foreach(var value in values)
+	  foreach (var value in values)
 	  {
 		Parse(value);
 	  }
@@ -52,7 +52,9 @@ namespace Calculator
 	  if (double.TryParse(value, out number))
 	  {
 		_postfix.Enqueue(new PostfixValue(number));
-	  } else {
+	  }
+	  else
+	  {
 		//Its not a number so verify its only a single character
 		if (value.Length > 1)
 		  throw new ArgumentException("Multiple operators in sequence found");
@@ -61,12 +63,26 @@ namespace Calculator
 		if (!Operators.ContainsKey(op))
 		  throw new ArgumentException("Invalid operator found");
 
+		if (op.Equals(')')) //Handle close paren differently.
+		{
 
-		while (_operators.Count > 0 && Operators[_operators.Peek()] >= Operators[op]) {
-		  _postfix.Enqueue(new PostfixValue(_operators.Pop()));
+		  while (_operators.Count > 0 && !_operators.Peek().Equals('('))
+		  {
+			_postfix.Enqueue(new PostfixValue(_operators.Pop()));
+		  }
+
+		  if (_operators.Count == 0 || !_operators.Peek().Equals('('))
+			throw new ArgumentException("Open parentheses not found");
+		  else 
+			_operators.Pop(); //remove the opening paren
+		} else {
+		  while ((_operators.Count > 0 && Operators[_operators.Peek()] >= Operators[op]) && !op.Equals('('))
+		  {
+			_postfix.Enqueue(new PostfixValue(_operators.Pop()));
+		  }
+		  _operators.Push(op);
 		}
-		_operators.Push(op);
-      }
+	  }
 	}
 	/// <summary>
 	/// Evaluates the stored equations. Keeping the result in memory
@@ -74,8 +90,12 @@ namespace Calculator
 	/// <returns>Returns the result of the stored equations.</returns>
 	public double Result()
 	{
-	  while(_operators.Count > 0)
+	  while (_operators.Count > 0)
+	  {
+		if (_operators.Peek().Equals('('))
+          throw new ArgumentException("Mis matched parentheses");
 		_postfix.Enqueue(new PostfixValue(_operators.Pop())); // clear the stack
+	  }
 	  Eval();
 	  return _postfix.Peek().Value();
 	}
@@ -88,13 +108,14 @@ namespace Calculator
 	  _postfix.Clear();
 	  _operators.Clear();
 	}
-	
+
 	private void Eval()
 	{
 	  Stack<double> values = new Stack<double>();
 	  PostfixValue value;
 
-	  while(_postfix.Count > 0){
+	  while (_postfix.Count > 0)
+	  {
 		value = _postfix.Dequeue();
 		if (value.IsNumeric())
 		{
@@ -131,7 +152,7 @@ namespace Calculator
   /// <summary>
   /// Stores either a value or operator in postfix notation.
   /// </summary>
- class PostfixValue
+  class PostfixValue
   {
 	private double? _value;
 	private char? _operator;
@@ -139,7 +160,7 @@ namespace Calculator
 	public PostfixValue(char Operator)
 	{
 	  _operator = Operator;
-    }
+	}
 
 	public PostfixValue(double value)
 	{
