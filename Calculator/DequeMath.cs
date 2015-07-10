@@ -23,6 +23,8 @@ namespace Calculator
 	  {
 		result = left + right;
 	  }
+	  if (double.IsPositiveInfinity(result))
+		throw new OverflowException();
 	  _queue.Push(result);
 	}
 	internal static void SubtractInPlace(this Stack<double> _queue)
@@ -42,6 +44,8 @@ namespace Calculator
 	  {
 		result = left - right;
 	  }
+	  if (double.IsNegativeInfinity(result))
+		throw new OverflowException();
 	  _queue.Push(result);
 	}
 	internal static void MultiplyInPlace(this Stack<double> _queue)

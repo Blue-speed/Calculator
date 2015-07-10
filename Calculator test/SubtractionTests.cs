@@ -42,5 +42,17 @@ namespace Calculator_test
 	  value = _calculator.Result();
 	  Assert.AreEqual(value, expected);
 	}
+
+	[TestMethod]
+	[ExpectedException(typeof(OverflowException))]
+	public void ArithmicUnderflow()
+	{
+	  double value;
+	  _calculator = new Calc();
+	  _calculator.Parse(double.MinValue.ToString("R"));
+	  _calculator.Parse("-");
+	  _calculator.Parse(double.MaxValue.ToString("R"));
+	  value = _calculator.Result();
+	}
   }
 }
