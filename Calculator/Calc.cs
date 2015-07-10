@@ -166,6 +166,7 @@ namespace Calculator
   /// <summary>
   /// The stack does not contain enough values to preform an operation.
   /// </summary>
+  [Serializable]
   public class StackUnderflowException : Exception, ISerializable
   {
 	public StackUnderflowException() { }
