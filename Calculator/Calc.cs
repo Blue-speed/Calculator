@@ -12,6 +12,9 @@ namespace Calculator
   {
 	private Queue<PostfixValue> _postfix;
 	private Stack<char> _operators;
+	/// <summary>
+	/// A list of all accepted operators and thier precidence.
+	/// </summary>
 	public Dictionary<char,int> Operators;
 
 	public Calc()

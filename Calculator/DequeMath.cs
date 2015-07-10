@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Calculator
 {
+  /// <summary>
+  /// Extension methods to manipulate a stack. Each function takes two items off the stack preforms an operation and pushes the result onto the stack.
+  /// </summary>
   internal static class DequeMath
   {
 	internal static void AddInPlace(this Stack<double> _queue)
@@ -65,6 +68,8 @@ namespace Calculator
 	  {
 		result = left * right;
 	  }
+	  if (double.IsPositiveInfinity(result))
+		throw new OverflowException();
 	  _queue.Push(result);
 	}
 	internal static void DivideInPlace(this Stack<double> _queue)
@@ -112,6 +117,8 @@ namespace Calculator
 	  {
 		result = Math.Pow(left,right);
 	  }
+	  if (double.IsPositiveInfinity(result))
+		throw new OverflowException();
 	  _queue.Push(result);
 	}
   }
