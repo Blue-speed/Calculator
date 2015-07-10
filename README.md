@@ -1,14 +1,14 @@
 # Calculator
 Interview test for IssueTrak.
 
-# Projects
+## Projects
 Calculator contains the math and structure to evulate the formulas.
 
 Calculator Test has the unit tests for the project
 
 CalcInterface is a simple command line interface.
 
-# Notes
+## Notes
 It uses a stack and a queue to convert infix equations into postfix notation.
 The postfix notation is used to finally evulate the formula.
 Available operators are + - * / ^
